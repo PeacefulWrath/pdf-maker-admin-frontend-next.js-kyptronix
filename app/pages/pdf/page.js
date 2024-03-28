@@ -1,12 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { getAllFiles } from "@/app/api-calls/api";
-import dynamic from "next/dynamic";
-
-const html2pdf = dynamic(() => import("html2pdf.js"), {
-  ssr: false,
-});
 
 function Pdf() {
   const [allFiles, setAllFiles] = useState([]);
@@ -21,8 +16,9 @@ function Pdf() {
     fetcher();
   }, []);
 
-  const handleDownload = async (fileName, fileData) => {
+  const handleDownload = useCallback(async (fileName, fileData) => {
     if (typeof window !== "undefined") {
+      const tempHtml2pdf = await import("html2pdf.js");
       const content = `
     <div>
       <h1>Dynamic Content</h1>
@@ -44,7 +40,7 @@ function Pdf() {
             });
         },
       };
-
+      const html2pdf = tempHtml2pdf.default;
       html2pdf()
         .from(content)
         .set(options)
@@ -73,7 +69,7 @@ function Pdf() {
         })
         .save();
     }
-  };
+  }, []);
 
   return (
     <>
