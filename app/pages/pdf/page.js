@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import { usePDF } from "react-to-pdf";
-import Image from "next/image";
 import { getAllFiles } from "@/app/api-calls/api";
-import html2pdf from "html2pdf.js";
-import logo from "../../logo.png";
+import dynamic from "next/dynamic";
+
+const html2pdf = dynamic(() => import("html2pdf.js"), {
+  ssr: false,
+});
 
 function Pdf() {
   const [allFiles, setAllFiles] = useState([]);
@@ -76,22 +77,6 @@ function Pdf() {
 
   return (
     <>
-      {/* <div>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
-      <img
-        src="https://media.licdn.com/dms/image/C4D0BAQGFsqtalZltQg/company-logo_200_200/0/1668596426707/kyptronixllp_logo?e=1719446400&v=beta&t=2Rx_m3sPDoqBC_g8LT1MngALALVUihsQh2wIYWZlSDs"
-        alt="watermark"
-        style={{
-          opacity: "0.5",
-          width: "100%",
-          // textAlign: "center",
-          zIndex: "0",
-          // position: "fixed",
-          marginBottom: "200px",
-          // width: "200px",
-          // height: "200px",
-        }}
-      />
-      <div>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div> */}
       <h1 className="mb-5">All Pdfs</h1>
       {allFiles.length !== 0 &&
         allFiles.map((data) => (
