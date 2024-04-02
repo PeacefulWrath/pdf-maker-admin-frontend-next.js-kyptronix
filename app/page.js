@@ -2,32 +2,29 @@
 import { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useRouter } from "next/navigation";
+import { saveFile } from "./api-calls/api";
 
 export default function Home() {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
-  const [decryptedData, setDecryptedData] = useState(undefined);
-  const [all, setAll] = useState([]);
-
-  const router = useRouter();
 
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.min.js");
 
-    const fetcher = async () => {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/api/allPdfs`, {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("ddd", data);
-          setAll([...data]);
-        })
-        .catch((error) =>
-          console.error("Error fetching decrypted data:", error)
-        );
-    };
-    fetcher();
+    // const fetcher = async () => {
+    //   await fetch(`${process.env.NEXT_PUBLIC_API}/api/allPdfs`, {
+    //     method: "GET",
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log("ddd", data);
+    //       setAll([...data]);
+    //     })
+    //     .catch((error) =>
+    //       console.error("Error fetching decrypted data:", error)
+    //     );
+    // };
+    // fetcher();
   }, []);
 
   const handleFileChange = (e) => {
@@ -41,45 +38,16 @@ export default function Home() {
     }
   };
 
-  // const handleUpload = async () => {
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-
-  //   // console.log("ff", file);
-  //   await fetch(`${process.env.NEXT_PUBLIC_API}/api/upload-pdf`, {
-  //     method: "POST",
-  //     body: formData,
-  //   })
-  //     .then((response) => response.blob())
-  //     .then((blob) => {
-  //       const pdfUrl = URL.createObjectURL(blob);
-  //       setDecryptedData(pdfUrl);
-
-  //       // const loadkit = async () => {
-  //       // const PSPDFKit = await import("pspdfkit");
-  //       // if (pdfUrl) {
-  //       //   // PSPDFKit.unload("#pdf-container");
-  //       //   const PSPDFKit = import("pspdfkit");
-  //       //   PSPDFKit.load({
-  //       //     container: "#pdf-container",
-  //       //     document: pdfUrl,
-  //       //     // Add your configuration options here
-  //       //     // Example: disable downloading and printing
-  //       //     toolbarItems: [
-  //       //       "thumbnails",
-  //       //       "outline",
-  //       //       "search",
-  //       //       "annotation-creation",
-  //       //     ],
-  //       //     disableDownload: true,
-  //       //     disablePrinting: true,
-  //       //   });
-  //       // }
-  //       // };
-  //       // loadkit();
-  //     })
-  //     .catch((error) => console.error("Error fetching decrypted data:", error));
-  // };
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const insertedData = await saveFile(formData);
+    if (insertedData) {
+      alert("pdf uploaded successfully");
+    } else {
+      alert("pdf upload failed");
+    }
+  };
 
   return (
     <div className="container mt-5">
@@ -96,7 +64,7 @@ export default function Home() {
         <button
           className="btn"
           style={{ backgroundColor: "green" }}
-          // onClick={handleUpload}
+          onClick={handleUpload}
         >
           Upload
         </button>
@@ -106,28 +74,6 @@ export default function Home() {
           </p>
         )}
       </div>
-      <div>
-        <h2>Decrypted Data:</h2>
-        {/* {decryptedData && (
-          <iframe
-            src={decryptedData}
-            title="Embedded Content"
-            width="100%"
-            height="400px"
-            allowFullScreen
-          />
-        )} */}
-      </div>
-      {/* {all.length !== 0 &&
-        all.map((d) => (
-          <iframe
-            src={d?.pdf?.data}
-            title="Embedded Content"
-            width="100%"
-            height="400px"
-            allowFullScreen
-          />
-        ))} */}
     </div>
   );
 }
