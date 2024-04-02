@@ -41,45 +41,45 @@ export default function Home() {
     }
   };
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", file);
+  // const handleUpload = async () => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
 
-    // console.log("ff", file);
-    await fetch(`${process.env.NEXT_PUBLIC_API}/api/upload-pdf`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
-        const pdfUrl = URL.createObjectURL(blob);
-        setDecryptedData(pdfUrl);
+  //   // console.log("ff", file);
+  //   await fetch(`${process.env.NEXT_PUBLIC_API}/api/upload-pdf`, {
+  //     method: "POST",
+  //     body: formData,
+  //   })
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const pdfUrl = URL.createObjectURL(blob);
+  //       setDecryptedData(pdfUrl);
 
-        // const loadkit = async () => {
-        // const PSPDFKit = await import("pspdfkit");
-        // if (pdfUrl) {
-        //   // PSPDFKit.unload("#pdf-container");
-        //   const PSPDFKit = import("pspdfkit");
-        //   PSPDFKit.load({
-        //     container: "#pdf-container",
-        //     document: pdfUrl,
-        //     // Add your configuration options here
-        //     // Example: disable downloading and printing
-        //     toolbarItems: [
-        //       "thumbnails",
-        //       "outline",
-        //       "search",
-        //       "annotation-creation",
-        //     ],
-        //     disableDownload: true,
-        //     disablePrinting: true,
-        //   });
-        // }
-        // };
-        // loadkit();
-      })
-      .catch((error) => console.error("Error fetching decrypted data:", error));
-  };
+  //       // const loadkit = async () => {
+  //       // const PSPDFKit = await import("pspdfkit");
+  //       // if (pdfUrl) {
+  //       //   // PSPDFKit.unload("#pdf-container");
+  //       //   const PSPDFKit = import("pspdfkit");
+  //       //   PSPDFKit.load({
+  //       //     container: "#pdf-container",
+  //       //     document: pdfUrl,
+  //       //     // Add your configuration options here
+  //       //     // Example: disable downloading and printing
+  //       //     toolbarItems: [
+  //       //       "thumbnails",
+  //       //       "outline",
+  //       //       "search",
+  //       //       "annotation-creation",
+  //       //     ],
+  //       //     disableDownload: true,
+  //       //     disablePrinting: true,
+  //       //   });
+  //       // }
+  //       // };
+  //       // loadkit();
+  //     })
+  //     .catch((error) => console.error("Error fetching decrypted data:", error));
+  // };
 
   return (
     <div className="container mt-5">
@@ -96,7 +96,7 @@ export default function Home() {
         <button
           className="btn"
           style={{ backgroundColor: "green" }}
-          onClick={handleUpload}
+          // onClick={handleUpload}
         >
           Upload
         </button>
@@ -108,7 +108,7 @@ export default function Home() {
       </div>
       <div>
         <h2>Decrypted Data:</h2>
-        {decryptedData && (
+        {/* {decryptedData && (
           <iframe
             src={decryptedData}
             title="Embedded Content"
@@ -116,7 +116,7 @@ export default function Home() {
             height="400px"
             allowFullScreen
           />
-        )}
+        )} */}
       </div>
       {/* {all.length !== 0 &&
         all.map((d) => (
